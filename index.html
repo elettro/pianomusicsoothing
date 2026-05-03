@@ -499,11 +499,12 @@
       display: grid;
       grid-template-columns: 0.92fr 1.08fr;
       gap: 28px;
-      align-items: stretch;
+      align-items: start;
     }
 
     .about-art {
       min-height: 420px;
+      align-self: start;
       border-radius: 28px;
       position: relative;
       overflow: hidden;
@@ -511,7 +512,8 @@
     }
 
     .about-art.image-art {
-      min-height: 420px;
+      min-height: auto;
+      aspect-ratio: 1 / 1;
       border-radius: 28px;
       position: relative;
       overflow: hidden;
@@ -523,7 +525,7 @@
       width: 100%;
       height: 100%;
       display: block;
-      object-fit: cover;
+      object-fit: contain;
     }
 
     .about-art.image-art::before {
@@ -1106,7 +1108,7 @@
       }
 
       .about-art.image-art img {
-        object-fit: cover;
+        object-fit: contain;
       }
 
       .about-copy p {
