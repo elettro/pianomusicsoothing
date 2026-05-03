@@ -990,6 +990,23 @@
         font-size: 11px;
       }
 
+      .merch-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .merch-toolbar .btn {
+        width: 100%;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .product-content h3 {
+        font-size: 24px;
+      }
+
       .reel-toolbar {
         align-items: stretch;
       }
@@ -1571,7 +1588,10 @@
     }
 
     function productImage(product) {
-      if (product.images && product.images.length && product.images[0].src) return product.images[0].src;
+      if (product.images && product.images.length && product.images[0].src) {
+        return product.images[0].src;
+      }
+
       return "";
     }
 
@@ -1580,16 +1600,28 @@
     }
 
     function getRandomProducts(count = 4) {
-      const eligibleProducts = stashboxProducts.filter(product => product.handle && productImage(product));
-      return [...eligibleProducts].sort(() => Math.random() - 0.5).slice(0, count);
+      const eligibleProducts = stashboxProducts.filter(product => {
+        return product.handle && productImage(product);
+      });
+
+      return [...eligibleProducts]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, count);
     }
 
     function renderStashboxProducts() {
-      if (!stashboxProductGrid) return;
+      if (!stashboxProductGrid) {
+        return;
+      }
+
       const products = getRandomProducts(4);
 
       if (!products.length) {
-        stashboxProductGrid.innerHTML = `<div class="product-error">Products could not be loaded right now. Visit Stashbox.ai to explore the shop.</div>`;
+        stashboxProductGrid.innerHTML = `
+          <div class="product-error">
+            Products could not be loaded right now. Visit Stashbox.ai to explore the shop.
+          </div>
+        `;
         return;
       }
 
