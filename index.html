@@ -1366,7 +1366,11 @@
 
     let activeFilter = "all";
     let visibleCount = 12;
-    let currentVideos = [...videoData];
+    function shuffleArray(items) {
+      return [...items].sort(() => Math.random() - 0.5);
+    }
+
+    let currentVideos = shuffleArray(videoData);
 
     function thumbUrl(id) {
       return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
@@ -1533,8 +1537,9 @@
     });
 
     shuffleBtn.addEventListener("click", () => {
-      currentVideos = [...currentVideos].sort(() => Math.random() - 0.5);
+      currentVideos = shuffleArray(currentVideos);
       visibleCount = 12;
+      stopOtherVideos();
       renderVideos();
     });
 
