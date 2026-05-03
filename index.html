@@ -356,6 +356,55 @@
       margin-bottom: 8px;
     }
 
+    .hero-video-controls {
+      position: absolute;
+      z-index: 5;
+      top: 18px;
+      left: 18px;
+      right: 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .hero-control-btn {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(0, 0, 0, 0.48);
+      color: #fff8ed;
+      min-height: 42px;
+      padding: 10px 13px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+    }
+
+    .hero-control-btn:hover {
+      background: rgba(255, 248, 237, 0.94);
+      color: #17130f;
+    }
+
+    .hero-video-overlay small {
+      display: inline-flex;
+      margin-bottom: 8px;
+      color: var(--gold2);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    #heroVideoTitle {
+      margin: -2px 0 12px;
+      color: rgba(255, 248, 237, 0.82);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
     .section {
       padding: 64px 0;
     }
@@ -823,6 +872,18 @@
         bottom: 14px;
       }
 
+      .hero-video-controls {
+        top: 12px;
+        left: 12px;
+        right: 12px;
+      }
+
+      .hero-control-btn {
+        min-height: 40px;
+        padding: 9px 10px;
+        font-size: 11px;
+      }
+
       .section {
         padding: 46px 0;
       }
@@ -955,15 +1016,24 @@
 
         <div class="hero-video-card" aria-label="Featured Piano Music Soothing video">
           <iframe
-            src="https://www.youtube-nocookie.com/embed/bm-guRvpuoM?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=bm-guRvpuoM&modestbranding=1&rel=0"
+            id="heroVideoFrame"
             title="Featured Piano Music Soothing Video"
             allow="autoplay; encrypted-media; picture-in-picture"
             loading="eager">
           </iframe>
+
+          <div class="hero-video-controls" aria-label="Featured video controls">
+            <button class="hero-control-btn" id="heroPrevBtn" type="button">‹ Previous</button>
+            <button class="hero-control-btn" id="heroRandomBtn" type="button">Random</button>
+            <button class="hero-control-btn" id="heroNextBtn" type="button">Next ›</button>
+          </div>
+
           <div class="hero-video-overlay">
+            <small id="heroVideoLabel">Featured Video</small>
             <strong>Visual calm for the modern screen.</strong>
+            <p id="heroVideoTitle">Soothing Piano Visual</p>
             <p>Use these videos for peaceful background listening, deep focus, quiet evenings, sleep preparation, and reflective creative work.</p>
-            <a class="mini-btn" href="https://www.youtube.com/watch?v=bm-guRvpuoM" target="_blank" rel="noopener">Watch on YouTube</a>
+            <a class="mini-btn" id="heroWatchLink" href="#" target="_blank" rel="noopener">Watch on YouTube</a>
           </div>
         </div>
       </div>
@@ -1194,6 +1264,65 @@
     function embedUrl(id) {
       return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&playsinline=1&rel=0&modestbranding=1`;
     }
+
+    let heroVideoIndex = 0;
+
+    const heroVideoFrame = document.getElementById("heroVideoFrame");
+    const heroWatchLink = document.getElementById("heroWatchLink");
+    const heroVideoTitle = document.getElementById("heroVideoTitle");
+    const heroPrevBtn = document.getElementById("heroPrevBtn");
+    const heroNextBtn = document.getElementById("heroNextBtn");
+    const heroRandomBtn = document.getElementById("heroRandomBtn");
+
+    function heroEmbedUrl(id) {
+      return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&controls=1&playsinline=1&loop=1&playlist=${id}&modestbranding=1&rel=0`;
+    }
+
+    function updateHeroVideo(index) {
+      if (!videoData.length || !heroVideoFrame) {
+        return;
+      }
+
+      heroVideoIndex = (index + videoData.length) % videoData.length;
+
+      const video = videoData[heroVideoIndex];
+
+      heroVideoFrame.src = heroEmbedUrl(video.id);
+      heroWatchLink.href = watchUrl(video.id);
+      heroVideoTitle.textContent = video.title;
+    }
+
+    function setRandomHeroVideo() {
+      if (videoData.length < 2) {
+        updateHeroVideo(0);
+        return;
+      }
+
+      let randomIndex = heroVideoIndex;
+
+      while (randomIndex === heroVideoIndex) {
+        randomIndex = Math.floor(Math.random() * videoData.length);
+      }
+
+      updateHeroVideo(randomIndex);
+    }
+
+    if (heroPrevBtn && heroNextBtn && heroRandomBtn) {
+      heroPrevBtn.addEventListener("click", () => {
+        updateHeroVideo(heroVideoIndex - 1);
+      });
+
+      heroNextBtn.addEventListener("click", () => {
+        updateHeroVideo(heroVideoIndex + 1);
+      });
+
+      heroRandomBtn.addEventListener("click", () => {
+        setRandomHeroVideo();
+      });
+    }
+
+    heroVideoIndex = Math.floor(Math.random() * videoData.length);
+    updateHeroVideo(heroVideoIndex);
 
     function tagLabel(tag) {
       const labels = {
