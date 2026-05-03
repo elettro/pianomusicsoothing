@@ -525,14 +525,15 @@
 
     .reel-sequence {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
     }
 
     .reel-card {
       position: relative;
-      min-height: 560px;
-      border-radius: 34px;
+      aspect-ratio: 16 / 9;
+      min-height: auto;
+      border-radius: 30px;
       overflow: hidden;
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.16);
@@ -541,7 +542,7 @@
     }
 
     .reel-card.tall {
-      min-height: 640px;
+      min-height: auto;
     }
 
     .reel-frame {
@@ -581,9 +582,10 @@
       left: 16px;
       right: 16px;
       bottom: 16px;
+      max-width: 78%;
       padding: 16px;
       border-radius: 22px;
-      background: rgba(0, 0, 0, 0.48);
+      background: rgba(0, 0, 0, 0.52);
       backdrop-filter: blur(16px);
       color: #fff;
       border: 1px solid rgba(255, 255, 255, 0.16);
@@ -601,7 +603,7 @@
     .reel-info h3 {
       margin: 0 0 8px;
       font-family: "Cormorant Garamond", serif;
-      font-size: 30px;
+      font-size: clamp(24px, 3vw, 34px);
       line-height: 0.98;
       letter-spacing: -0.03em;
     }
@@ -610,7 +612,7 @@
       margin: 0 0 12px;
       color: rgba(255, 255, 255, 0.76);
       font-size: 13px;
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
     .reel-actions {
@@ -751,12 +753,12 @@
       }
 
       .reel-sequence {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .music-links,
       .feature-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -807,8 +809,11 @@
 
       .trust-row,
       .feature-grid,
-      .reel-sequence,
       .music-links {
+        grid-template-columns: 1fr;
+      }
+
+      .reel-sequence {
         grid-template-columns: 1fr;
       }
 
@@ -833,8 +838,42 @@
 
       .reel-card,
       .reel-card.tall {
-        min-height: 650px;
-        border-radius: 30px;
+        aspect-ratio: 16 / 9;
+        min-height: auto;
+        border-radius: 24px;
+      }
+
+      .reel-info {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        max-width: calc(100% - 20px);
+        padding: 12px;
+        border-radius: 18px;
+      }
+
+      .reel-info small {
+        font-size: 10px;
+        margin-bottom: 5px;
+      }
+
+      .reel-info h3 {
+        font-size: 22px;
+        margin-bottom: 5px;
+      }
+
+      .reel-info p {
+        display: none;
+      }
+
+      .reel-actions {
+        gap: 6px;
+      }
+
+      .mini-btn {
+        min-height: 34px;
+        padding: 8px 10px;
+        font-size: 11px;
       }
 
       .reel-toolbar {
@@ -1219,7 +1258,7 @@
 
     function createCard(video, index) {
       const card = document.createElement("article");
-      card.className = `reel-card ${index % 5 === 0 ? "tall" : ""}`;
+      card.className = "reel-card";
       card.dataset.tag = video.tag;
 
       card.innerHTML = `
